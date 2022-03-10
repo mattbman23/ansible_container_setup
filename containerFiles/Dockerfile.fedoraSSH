@@ -1,0 +1,18 @@
+FROM registry.fedoraproject.org/fedora:35
+
+RUN dnf install -y systemd openssh-server && \
+    dnf clean all
+
+RUN mkdir .ssh
+
+COPY ./helpers/authorized_keys /root/.ssh/authorized_keys
+
+RUN echo 'root:password' | chpasswd 
+
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Enable the services
+RUN systemctl enable sshd.service  
+
+# Use systemd as command
+CMD [ "/usr/sbin/init" ]

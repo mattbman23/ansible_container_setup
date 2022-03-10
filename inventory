@@ -1,0 +1,13 @@
+[workstation]
+refiner-attlocal-net ansible_port=5022 ansible_ssh_pass=password
+ 
+[dbserver]
+127.0.0.1 ansible_port=5023 ansible_ssh_pass=password
+
+[webserver]
+localhost ansible_port=5024 ansible_ssh_pass=password
+
+[local:children]
+workstation
+webserver
+dbserver

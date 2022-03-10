@@ -1,0 +1,13 @@
+FROM debian
+
+RUN apt update && apt install openssh-server python3 -y
+
+RUN mkdir .ssh
+
+COPY ./helpers/authorized_keys /root/.ssh/authorized_keys
+
+RUN echo 'root:password' | chpasswd  
+
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+ENTRYPOINT service ssh start && bash

@@ -1,0 +1,12 @@
+FROM centos/systemd 
+
+RUN yum upgrade -y && yum update -y \
+    && yum install openssh-server -y 
+    
+RUN mkdir .ssh
+
+COPY ./helpers/authorized_keys /root/.ssh/authorized_keys
+
+RUN echo 'root:password' | chpasswd 
+
+RUN sed -i 's/#PermitRootLogin yes/PermitRootLogin yes/' /etc/ssh/sshd_config
